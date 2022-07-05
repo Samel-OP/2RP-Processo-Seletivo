@@ -1,0 +1,10 @@
+is_global = true
+build_property.TargetFramework = net5.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.PublishSingleFile = 
+build_property.IncludeAllContentForSelfExtract = 
+build_property._SupportedPlatformList = Android,iOS,Linux,macOS,Windows
+build_property.RootNamespace = gestaoUsuarios2Rp.webAPI
+build_property.ProjectDir = C:\Users\samue\Desktop\2RP Processo seletivo\Back-End - API\gestaoUsuarios2Rp.webAPI\gestaoUsuarios2Rp.webAPI\

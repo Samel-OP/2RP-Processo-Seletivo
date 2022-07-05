@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>gestaoUsuarios2Rp.webAPI</name>
+    </assembly>
+    <members>
+        <member name="M:gestaoUsuarios2Rp.webAPI.Controllers.LoginController.Login(gestaoUsuarios2Rp.webAPI.ViewModels.LoginViewModel)">
+            <summary>
+            Valida o usuário
+            </summary>
+            <param name="login">Objeto login com o email e a senha do usuário</param>
+            <returns>Um status code 200 - Ok com o token do usuário autenticado</returns>
+        </member>
+        <member name="M:gestaoUsuarios2Rp.webAPI.Controllers.UsuarioController.ListarTodos">
+            <summary>
+            Lista todos os usuários
+            </summary>
+            <returns>Uma lista de usuários</returns>
+        </member>
+        <member name="M:gestaoUsuarios2Rp.webAPI.Controllers.UsuarioController.Cadastrar(gestaoUsuarios2Rp.webAPI.Domains.Usuario)">
+            <summary>
+            Cadastra um novo usuário
+            </summary>
+            <param name="novoUsuario">Objeto com as informações do novo usuário</param>
+            <returns>Retorna um status code 201 - Created</returns>
+        </member>
+        <member name="M:gestaoUsuarios2Rp.webAPI.Interfaces.IUsuarioRepository.Login(System.String,System.String)">
+            <summary>
+            Valida o usuário
+            </summary>
+            <param name="email">E-mail do usuário</param>
+            <param name="senha">Senha do usuário</param>
+            <returns>Um objeto do tipo Usuario que foi encontrado</returns>
+        </member>
+        <member name="M:gestaoUsuarios2Rp.webAPI.Interfaces.IUsuarioRepository.Cadastrar(gestaoUsuarios2Rp.webAPI.Domains.Usuario)">
+            <summary>
+            Cadastra um novo usuário
+            </summary>
+            <param name="novoUsuario">Objeto contendo as informações do novo usuário o</param>
+        </member>
+        <member name="M:gestaoUsuarios2Rp.webAPI.Interfaces.IUsuarioRepository.ListarTodos">
+            <summary>
+            Lista todos os usuários
+            </summary>
+            <returns>Uma lista de usuários</returns>
+        </member>
+        <member name="M:gestaoUsuarios2Rp.webAPI.Interfaces.IUsuarioRepository.Atualizar(System.Int32,gestaoUsuarios2Rp.webAPI.Domains.Usuario)">
+            <summary>
+            Atualiza um usuário pelo seu id
+            </summary>
+            <param name="id"></param>
+            <param name="usuarioAtualizado"></param>
+        </member>
+        <member name="M:gestaoUsuarios2Rp.webAPI.Interfaces.IUsuarioRepository.BuscarPorId(System.Int32)">
+            <summary>
+            Busca um usuário pelo seu id
+            </summary>
+            <param name="id">id do usuário que será buscado</param>
+            <returns>O usuário buscado</returns>
+        </member>
+        <member name="M:gestaoUsuarios2Rp.webAPI.Interfaces.IUsuarioRepository.Deletar(System.Int32)">
+            <summary>
+            Deleta um usuário pelo seu id
+            </summary>
+            <param name="id">id do usuário que será deletado</param>
+        </member>
+    </members>
+</doc>
