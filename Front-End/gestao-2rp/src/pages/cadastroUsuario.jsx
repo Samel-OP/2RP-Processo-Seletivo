@@ -1,7 +1,9 @@
 import { React, Component } from 'react';
 import axios from 'axios';
-import '../assets/css/homePage.css';
+import '../assets/css/style.css';
 import Header from '../components/header.jsx';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default class CadastroUsuario extends Component {
     constructor(props) {
@@ -18,6 +20,26 @@ export default class CadastroUsuario extends Component {
         };
     }
 
+    notify = () => toast.success(('Usuário cadastrado!'), {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+    });
+
+    notifyError = () => toast.error('Ops algo deu errado, verifique os campos e tente novamente!', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+    });
+
     BuscarPerfil = () => {
         let id = localStorage.getItem('usuario-id')
         axios('http://localhost:5000/api/Usuario/' + id, {
@@ -33,28 +55,42 @@ export default class CadastroUsuario extends Component {
             .catch((erro) => console.log(erro));
     };
 
-    AtualizaUsuario = () => {
-        axios.post('http://localhost:5000/api/Usuario', {
-            email: this.state.email,
-            senha: this.state.senha,
-            nomeUsuario: this.state.nome,
-            idTipoUsuario: this.state.tipo,
-            statusUsuario: this.state.status,
-        },
-            {
-                headers: {
-                    Authorization: 'Bearer ' + localStorage.getItem('usuario-login'),
-                },
-            })
+    CadastraUsuario = (event) => {
+        event.preventDefault();
+        var formData = new FormData();
+
+        formData.append('email', this.state.email);
+        formData.append('senha', this.state.senha);
+        formData.append('nomeUsuario', this.state.nome);
+        formData.append('idTipoUsuario', this.state.tipo);
+        formData.append('statusUsuario', this.state.status);
+
+        axios({
+            method: "post",
+            url: "http://localhost:5000/api/Usuario",
+            data: formData,
+            headers: {
+                "Content-Type": "multipart/form-data",
+                "Authorization": 'Bearer ' + localStorage.getItem('usuario-login'),
+            },
+        })
             .then((resposta) => {
                 if (resposta.status === 201) {
-                    console.log(this.state.email);
-                    console.log(this.state.senha);
-                    console.log(this.state.nome);
-                    console.log(this.state.tipo);
-                    console.log(this.state.status);
+                    var name = document.getElementById('nomeUser');
+                    name.value = '';
+                    var email = document.getElementById('emailUser');
+                    email.value = '';
+                    var senha = document.getElementById('senhaUser');
+                    senha.value = '';
+                    var tipo = document.getElementById('tipoUser');
+                    tipo.value = 1;
+                    var status = document.getElementById('statusUser');
+                    status.value = true;
+                    this.notify()
                     console.log(resposta);
-                    this.props.history.push('/listagemUsuario')
+                }
+                else {
+                    this.notifyError()
                 }
             })
             .catch((erro) => console.log(erro));
@@ -75,29 +111,6 @@ export default class CadastroUsuario extends Component {
             .catch((erro) => console.log(erro));
     };
 
-    TipoUsuario = (tipo) => {
-        if (tipo == 1) {
-            return (
-                <span className='txtDetailsCard'>Geral</span>
-            )
-        }
-        else if (tipo == 2) {
-            return (
-                <span className='txtDetailsCard'>Admin</span>
-            )
-        }
-        else if (tipo == 3) {
-            return (
-                <span className='txtDetailsCard'>Root</span>
-            )
-        }
-        else {
-            return (
-                <span className='txtDetailsCard'>Não definido</span>
-            )
-        }
-    };
-
     atualizaStateCampo = (campo) => {
         this.setState({ [campo.target.name]: campo.target.value });
         console.log(campo.target.value)
@@ -113,78 +126,90 @@ export default class CadastroUsuario extends Component {
                 <Header />
                 <main>
                     <section className="container">
-                        <div className='boxStrategyCards'>
-                            <h1 className='titleStrategy'>
+                        <div className='boxMain'>
+                            <h1 className='titlePage'>
                                 Cadastro de usuário
                             </h1>
-                            <p className='subTitleStrategy'>
-                                É possível cadastrar um novo usuário aqui 
-                            </p>
-                            <div className='containerCards'>
-                                <div className='boxCardPerfil'>
-                                    <div className='boxContents'>
-                                        {/* <form onSubmit={this.AtualizaUsuario}> */}
-                                            <div className="inputAll">
-                                                <input
-                                                    type="text"
-                                                    name='nome'
-                                                    placeholder='Nome'
-                                                    onChange={this.atualizaStateCampo}
-                                                    required
+                            <div className='boxPerfil'>
+                                <div className='boxContents'>
+                                    <form onSubmit={this.CadastraUsuario}>
+                                        <div className="inputAll">
+                                            <label className='labelInput' for="Nome">Nome</label>
+                                            <input
+                                                type="text"
+                                                id='nomeUser'
+                                                name='nome'
+                                                placeholder='Nome'
+                                                onChange={this.atualizaStateCampo}
+                                                required
+                                            />
+                                        </div>
+                                        <div className="inputAll">
+                                            <label className='labelInput' for="Email">Email</label>
+                                            <input
+                                                type="email"
+                                                id='emailUser'
+                                                name='email'
+                                                placeholder='Email'
+                                                onChange={this.atualizaStateCampo}
+                                                required
+                                            />
+                                        </div>
+                                        <div className="inputAll">
+                                            <label className='labelInput' for="Senha">Senha</label>
+                                            <input
+                                                type="password"
+                                                id='senhaUser'
+                                                name='senha'
+                                                placeholder='Senha'
+                                                onChange={this.atualizaStateCampo}
+                                                required
+                                            />
+                                            <label for="Senha"></label>
+                                        </div>
+                                        <div className='selectAll'>
+                                            <label className='labelInput' for="Tipo">Tipo</label>
+                                            <select
+                                                name='tipo'
+                                                id='tipoUser'
+                                                onChange={this.atualizaStateCampo}
+                                            >
+                                                <option value={1}>Geral</option>
+                                                <option value={2}>Admin</option>
+                                                <option value={3}>Root</option>
+                                            </select>
+                                        </div>
+                                        <div className='selectAll'>
+                                            <label className='labelInput' for="Status">Status</label>
+                                            <select
+                                                name='status'
+                                                id='statusUser'
+                                                onChange={this.atualizaStateCampo}
+                                            >
+                                                <option value={true}>Ativo</option>
+                                                <option value={false}>Inativo</option>
+                                            </select>
+                                        </div>
+                                        <div className='btnCenter'>
+                                            <button
+                                                className='btnChange'
+                                                type='submit'
+                                            >
+                                                <ToastContainer
+                                                    position="top-right"
+                                                    autoClose={5000}
+                                                    hideProgressBar={true}
+                                                    newestOnTop={false}
+                                                    closeOnClick
+                                                    rtl={false}
+                                                    pauseOnFocusLoss
+                                                    draggable
+                                                    pauseOnHover
                                                 />
-                                            </div>
-                                            <div className="inputAll">
-                                                <input
-                                                    type="email"
-                                                    name='email'
-                                                    placeholder='Email'
-                                                    onChange={this.atualizaStateCampo}
-                                                    required
-                                                />
-                                            </div>
-                                            <div className="inputAll">
-                                                <input
-                                                    type="password"
-                                                    name='senha'
-                                                    placeholder='Senha'
-                                                    onChange={this.atualizaStateCampo}
-                                                    required
-                                                />
-                                                <label for="Senha"></label>
-                                            </div>
-                                            <div className='selectAll'>
-                                                <select
-                                                    name='tipo'
-                                                    onChange={this.atualizaStateCampo}
-                                                    required
-                                                >
-                                                    <option value={1}>Geral</option>
-                                                    <option value={2}>Admin</option>
-                                                    <option value={3}>Root</option>
-                                                </select>
-                                                {/* <label for="Tipo"></label> */}
-                                            </div>
-                                            <div className='selectAll'>
-                                                <select
-                                                    name='status'
-                                                    onChange={this.atualizaStateCampo}
-                                                    required
-                                                >
-                                                    <option value={true}>Ativo</option>
-                                                    <option value={false}>Inativo</option>
-                                                </select>
-                                                {/* <label for="Status"></label> */}
-                                            </div>
-                                            <div>
-                                                <button
-                                                    className='btnGet'
-                                                    onClick={this.AtualizaUsuario}
-                                                >
-                                                    <span className='txtBtn'>Cadastrar</span>
-                                                </button>
-                                            </div>
-                                        {/* </form> */}
-                                    </div>
+                                                <span className='txtBtn'>Cadastrar</span>
+                                            </button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>

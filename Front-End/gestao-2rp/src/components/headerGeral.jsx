@@ -3,22 +3,16 @@ import arrow from '../assets/img/arrow.png';
 import { Link } from 'react-router-dom';
 import { useHistory } from "react-router-dom";
 
-function Header() {
+function HeaderGeral() {
     let history = useHistory();
     function logOut() {
         localStorage.removeItem("usuario-login");
+        localStorage.removeItem("usuario-perfil-id");
         history.push("/");
     }
     return (
         <header className='headerHome'>
             <img className='logo2rp' src='https://www.2rpnet.com.br/assets/images/2rp-net.svg' alt='logo' />
-            <nav className='navHeader'>
-                <Link className='linkHeader' to={'/meuPerfil'}>Meu perfil</Link>
-                <Link className='linkHeader' to={'/listagemUsuario'}>Lista usuários</Link>
-                <Link className='linkHeader' to={'/cadastroUsuario'}>Cadastro de usuario</Link>
-            </nav>
-
-            {/* <Link className='linkHeader' to={'/login'}>Login</Link> */}
 
             <div className='btnSair' onClick={logOut}>
                 <Link className='textBtnSair' >Sair</Link>
@@ -28,4 +22,4 @@ function Header() {
     )
 }
 
-export default Header;
+export default HeaderGeral;

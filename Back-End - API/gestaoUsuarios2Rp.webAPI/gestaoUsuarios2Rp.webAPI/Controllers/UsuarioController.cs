@@ -49,7 +49,7 @@ namespace gestaoUsuarios2Rp.webAPI.Controllers
         /// <returns>Retorna um status code 201 - Created</returns>
         [Authorize(Roles = "2, 3")]
         [HttpPost]
-        public IActionResult Cadastrar(Usuario novoUsuario)
+        public IActionResult Cadastrar([FromForm] Usuario novoUsuario)
         {
             try
             {
@@ -63,9 +63,9 @@ namespace gestaoUsuarios2Rp.webAPI.Controllers
             }
         }
 
-        
+        [Authorize(Roles = "1, 2, 3")]
         [HttpPut("{id}")]
-        public IActionResult Atualizar(int id, Usuario usuarioAtualizado)
+        public IActionResult Atualizar(int id, [FromForm] Usuario usuarioAtualizado)
         {
             try
             {
@@ -78,7 +78,8 @@ namespace gestaoUsuarios2Rp.webAPI.Controllers
                 return BadRequest(ex);
             }
         }
-     
+
+        [Authorize(Roles = "1, 2, 3")]
         [HttpGet("{id}")]
         public IActionResult BuscarPorId(int id)
         {
@@ -92,7 +93,7 @@ namespace gestaoUsuarios2Rp.webAPI.Controllers
             }
         }
 
-        [Authorize(Roles = "2, 3")]
+        [Authorize(Roles = "3")]
         [HttpDelete("Delete/{id}")]
         public IActionResult Deletar(int id)
         {

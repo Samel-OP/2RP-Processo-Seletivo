@@ -1,13 +1,15 @@
 import { React, Component } from 'react';
 import axios from 'axios';
-import '../assets/css/homePage.css';
+import '../assets/css/style.css';
 import Header from '../components/header.jsx';
+import { parseJwt } from '../services/auth';
 
 export default class ListagemUsuario extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
+            resposta: [],
             isLoading: false,
             listaUsuarios: [],
         };
@@ -21,7 +23,10 @@ export default class ListagemUsuario extends Component {
         })
             .then((resposta) => {
                 if (resposta.status === 200) {
-                    this.setState({ listaUsuarios: resposta.data });
+                    this.setState({ listaUsuarios: resposta.data })
+                    // this.state.listaUsuarios.map((usuario) => {
+                    //     usuario.id == parseJwt().jti
+                    // })              
                 }
             })
             .catch((erro) => console.log(erro));
@@ -68,34 +73,40 @@ export default class ListagemUsuario extends Component {
                 <main>
                     <section className="container">
 
-                        <div className='boxStrategyCards'>
-                            <h1 className='titleStrategy'>
+                        <div className='boxMain'>
+                            <h1 className='titlePage'>
                                 Listagem usuários
                             </h1>
-                            <p className='subTitleStrategy'>
+                            <p className='subTitlePage'>
                                 É possível ver aqui todos usuários do sistema
                             </p>
                             <div className='containerCards'>
                                 {this.state.listaUsuarios.map((usuarios) => {
-                                    return (
-                                        <div className='boxCard' onClick={() => this.PegarIdUsuario(usuarios.idUsuario)} key={usuarios.idUsuario}>
-                                            <div className='boxContents'>
-                                                <h4>{usuarios.nomeUsuario}</h4>
-                                                <div>
-                                                    <span className='txtDetailsCard'>
-                                                        Email:
-                                                        {usuarios.email}
-                                                    </span>
-                                                </div>
-                                                <div>
-                                                    <span className='txtDetailsCard'>
-                                                        Tipo:
-                                                        {this.TipoUsuario(usuarios.idTipoUsuario)}
-                                                    </span>
+                                    if (usuarios.idUsuario != parseJwt().jti) {
+                                        return (
+                                            <div className='boxCard' onClick={() => this.PegarIdUsuario(usuarios.idUsuario)} key={usuarios.idUsuario}>
+                                                <div className='boxContents'>
+                                                    <h4>{usuarios.nomeUsuario}</h4>
+                                                    <div className='boxTxtDetails'>
+                                                        <span className='txtTituloDetailsCard'>
+                                                            Email:
+                                                        </span>
+                                                        <span className='txtDetailsCard'>
+                                                            {usuarios.email}
+                                                        </span>
+                                                    </div>
+                                                    <div className='boxTxtDetails'>
+                                                        <span className='txtTituloDetailsCard'>
+                                                            Tipo:
+                                                        </span>
+                                                        <span className='txtDetailsCard'>
+                                                            {this.TipoUsuario(usuarios.idTipoUsuario)}
+                                                        </span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    )
+                                        )
+                                    }
                                 })}
                             </div>
                         </div>

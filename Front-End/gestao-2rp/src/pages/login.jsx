@@ -1,8 +1,8 @@
-import '../assets/css/homePage.css';
-import work from '../assets/img/imgHome.jpg';
+import '../assets/css/style.css';
+import work from '../assets/img/imgLogin.jpg';
 import axios from "axios";
 import { Component } from "react";
-import { parseJwt, usuarioAutenticado } from '../services/auth';
+import { parseJwt } from '../services/auth';
 
 export default class Login extends Component {
     constructor(props) {
@@ -84,7 +84,10 @@ export default class Login extends Component {
             <body>
                 <main>
                     <section className="container">
-                        <div className='boxMain'>
+                        <div className='boxMainLogin'>
+                            <div className='boxImgLogin'>
+                                <img className='imgLogin' src={work} alt='Trabalho' />
+                            </div>
                             <div>
                                 <img className='logo2rpLogin' src='https://www.2rpnet.com.br/assets/images/2rp-net.svg' alt='logo' />
                                 <div className='boxLogin'>
@@ -115,28 +118,16 @@ export default class Login extends Component {
                                             <label for="Senha"></label>
                                         </div>
 
-                                        <p style={{ color: 'red' }}>{this.state.erroMensagem}</p>
+                                        <p className='errorMessage'>{this.state.erroMensagem}</p>
 
-                                        <button className='btnGet'
+                                        <button className='btnChange'
 
                                             type="submit"
-                                            disabled={
-                                                //verifica se o email ou a senha está vazio
-                                                this.state.email === '' || this.state.senha === ''
-                                                    //se for verdadeiro desabilita o botão 
-                                                    ? 'none'
-                                                    //se for falso não desbilita o botão
-                                                    : ''
-                                            }
+                                            disabled={ this.state.email === '' || this.state.senha === '' ? 'none' : '' }
                                         >
                                             <span className='txtBtn'>{this.statusLogin(this.state.isLoading)}</span>
                                         </button>
                                     </form>
-                                </div>
-                            </div>
-                            <div className='boxImgMain'>
-                                <div>
-                                    <img className='imgHome' src={work} alt='Trabalho' />
                                 </div>
                             </div>
                         </div>
